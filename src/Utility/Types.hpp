@@ -17,8 +17,8 @@ typedef double f64;
 
 #define global static
 
-constexpr i32 GAME_SCREEN_WIDTH = 1660;
-constexpr i32 GAME_SCREEN_HEIGHT = 840;
+constexpr i32 GAME_SCREEN_WIDTH = 1200;
+constexpr i32 GAME_SCREEN_HEIGHT = GAME_SCREEN_WIDTH * 1080 / 1920;
 
 constexpr i32 MAP_TILE_SIZE = 16;
 constexpr f32 MAP_TILE_SIZE_F32 = (f32)MAP_TILE_SIZE;
