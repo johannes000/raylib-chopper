@@ -21,13 +21,17 @@ enum struct LogLevel {
 };
 
 // Logger-Klasse
-class Logger {
-public:
-	Logger() = default;
+struct Logger {
+	Logger(const Logger &) = delete;
+	Logger &operator=(const Logger &) = delete;
 
+	static Logger &getInstance() {
+		static Logger instance;
+		return instance;
+	}
 	// Log-Funktion mit variadischen Argumenten
 	template <typename... Args>
-	void log(LogLevel level, std::string_view format, Args &&...args) {
+	constexpr void log(LogLevel level, std::string_view format, Args &&...args) const {
 		// Formatierte Nachricht erstellen
 		std::string message = std::vformat(format, std::make_format_args(args...));
 
@@ -63,22 +67,27 @@ public:
 
 	// Hilfsfunktionen für verschiedene Log-Level
 	template <typename... Args>
-	void debug(std::string_view format, Args &&...args) {
+	constexpr void debug(std::string_view format, Args &&...args) const {
 		log(LogLevel::DEBUG, format, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
-	void info(std::string_view format, Args &&...args) {
+	constexpr void info(std::string_view format, Args &&...args) const {
 		log(LogLevel::INFO, format, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
-	void warning(std::string_view format, Args &&...args) {
+	constexpr void warning(std::string_view format, Args &&...args) const {
 		log(LogLevel::WARNING, format, std::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
-	void error(std::string_view format, Args &&...args) {
+	constexpr void error(std::string_view format, Args &&...args) const {
 		log(LogLevel::ERROR, format, std::forward<Args>(args)...);
 	}
+
+private:
+	Logger() = default;
 };
+
+#define LOG Logger::getInstance()
