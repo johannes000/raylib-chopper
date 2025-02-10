@@ -17,7 +17,8 @@ enum struct LogLevel {
 	DEBUG,
 	INFO,
 	WARNING,
-	ERROR
+	ERROR,
+	FATAL
 };
 
 // Logger-Klasse
@@ -55,6 +56,9 @@ struct Logger {
 			case LogLevel::ERROR:
 				levelStr = "ERROR";
 				break;
+			case LogLevel::FATAL:
+				levelStr = "FATAL";
+				break;
 		}
 
 		// Ausgabeformat erstellen
@@ -84,6 +88,11 @@ struct Logger {
 	template <typename... Args>
 	constexpr void error(std::string_view format, Args &&...args) const {
 		log(LogLevel::ERROR, format, std::forward<Args>(args)...);
+	}
+	template <typename... Args>
+	constexpr void fatal(std::string_view format, Args &&...args) const {
+		log(LogLevel::FATAL, format, std::forward<Args>(args)...);
+		exit(-1);
 	}
 
 private:
