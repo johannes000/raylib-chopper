@@ -2,10 +2,9 @@
 
 #include "Utility\Includes.hpp"
 
-class Component;
 class Game;
 
-class Actor {
+class Entity {
 public:
 	enum struct State {
 		Active,
@@ -13,17 +12,19 @@ public:
 		Dead
 	};
 
-	typedef std::shared_ptr<Actor> Ptr;
-	typedef std::unique_ptr<Actor> UPtr;
+	typedef std::shared_ptr<Entity> Ptr;
+	typedef std::unique_ptr<Entity> UPtr;
 
-	Actor(std::shared_ptr<Game> game);
-	virtual ~Actor();
+	Entity(Game *game);
+	virtual ~Entity();
 
 	void Update();
-	void UpdateComponents();
-	virtual void UpdateActor(); // Actor spezifische Updates
+	virtual void UpdateEntity(); // Entity Spezifisches update
+	virtual void Draw() const;
+	virtual void ProcessInput();
 
-	State GetState() const { return mState; }
+	State
+	GetState() const { return mState; }
 	void SetState(State state) { mState = state; }
 
 	const raylib::Vector2 GetPosition() const { return mPosition; }
@@ -36,16 +37,14 @@ public:
 	f32 GetRotation() const { return mRotation; }
 	void SetRotation(f32 rot) { mRotation = rot; }
 
-	Component *AddComponent(std::unique_ptr<Component> component);
-	void RemoveComponent(Component *component);
+	Game &GetGame() { return *mGame; }
 
 private:
+	Game *mGame;
+
 	State mState;
 
 	raylib::Vector2 mPosition;
 	f32 mScale;
 	f32 mRotation;
-
-	std::vector<std::unique_ptr<Component>> mComponents;
-	std::shared_ptr<Game> mGame;
 };
