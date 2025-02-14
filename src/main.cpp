@@ -24,6 +24,8 @@ void RaylibLogCallback(int logLevel, const char *text, va_list args) {
 }
 
 i32 main(int /* argc */, char ** /* argv */) {
+	SetTraceLogCallback(RaylibLogCallback);
+
 	Game game;
 	return game.Run();
 }
