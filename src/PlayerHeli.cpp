@@ -10,7 +10,6 @@ PlayerHeli::~PlayerHeli() {
 }
 
 void PlayerHeli::UpdateEntity() {
-	mPosition += mVelocity * GetFrameTime();
 	mDrawrect.SetPosition(GetPosition());
 }
 

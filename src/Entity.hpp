@@ -50,7 +50,7 @@ protected:
 
 	raylib::Vector2 mPosition;
 	raylib::Vector2 mVelocity;
-	f32 mMaxMoveSpeed;
+	f32 mMaxMoveSpeed; // In Einheiten/s
 
 	f32 mScale;
 	f32 mRotation;

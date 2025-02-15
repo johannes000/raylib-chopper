@@ -36,4 +36,6 @@ private:
 
 	std::vector<std::shared_ptr<Entity>> mEntitys;
 	std::vector<std::shared_ptr<Entity>> mPendingEntitys;
+
+	raylib::Rectangle mGameBoundry;
 };
