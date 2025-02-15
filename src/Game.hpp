@@ -32,6 +32,8 @@ private:
 	raylib::Window mWindow;
 	raylib::Camera2D mCamera;
 
+	std::shared_ptr<class PlayerHeli> mPlayer;
+
 	std::vector<std::shared_ptr<Entity>> mEntitys;
 	std::vector<std::shared_ptr<Entity>> mPendingEntitys;
 };

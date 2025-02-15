@@ -31,6 +31,10 @@ public:
 	void SetPosition(raylib::Vector2 pos) { mPosition = pos; }
 	void SetPosition(f32 x, f32 y) { mPosition = raylib::Vector2{x, y}; }
 
+	const raylib::Vector2 GetVelocity() const { return mVelocity; }
+	void SetVelocity(raylib::Vector2 vel) { mVelocity = vel; }
+	void SetVelocity(f32 x, f32 y) { mVelocity = raylib::Vector2{x, y}; }
+
 	f32 GetScale() const { return mScale; }
 	void SetScale(f32 scale) { mScale = scale; }
 
@@ -39,12 +43,15 @@ public:
 
 	Game &GetGame() { return *mGame; }
 
-private:
+protected:
 	Game *mGame;
 
 	State mState;
 
 	raylib::Vector2 mPosition;
+	raylib::Vector2 mVelocity;
+	f32 mMaxMoveSpeed;
+
 	f32 mScale;
 	f32 mRotation;
 };

@@ -14,7 +14,8 @@ i32 Game::Run() {
 	InitGame();
 
 	auto heli = std::make_shared<PlayerHeli>(this);
-	heli->SetPosition(200.f, 300.f);
+	heli->SetPosition(100.f, 300.f);
+	mPlayer = heli;
 	AddEntity(heli);
 
 	while (!WindowShouldClose()) {
@@ -27,6 +28,9 @@ i32 Game::Run() {
 }
 
 void Game::ProcessInput() {
+	for (auto &e : mEntitys) {
+		e->ProcessInput();
+	}
 }
 
 void Game::RenderGame() {
@@ -40,7 +44,6 @@ void Game::RenderGame() {
 		e->Draw();
 	}
 
-	DrawCircle(200, 300, 10, RED);
 	mWindow.EndDrawing();
 }
 
