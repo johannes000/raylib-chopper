@@ -48,9 +48,12 @@ protected:
 
 	State mState;
 
+	bool mHasAcceleration;
+
 	raylib::Vector2 mPosition;
 	raylib::Vector2 mVelocity;
 	f32 mMaxMoveSpeed; // In Einheiten/s
+	f32 mAcceleration; // In Einheiten/s^2
 
 	f32 mScale;
 	f32 mRotation;

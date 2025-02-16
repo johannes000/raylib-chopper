@@ -3,6 +3,8 @@
 #include "Entity.hpp"
 #include "PlayerHeli.hpp"
 
+#include <format>
+
 Game::Game() {
 }
 
@@ -67,7 +69,7 @@ void Game::RenderGame() {
 }
 
 void Game::UpdateCamera() {
-	mCamera.SetTarget(mPlayer->GetPosition());
+	mCamera.SetTarget(mPlayer->GetRotationPointWorldPosition());
 
 	const auto size = mWindow.GetSize();
 	const auto offset = raylib::Vector2(size.x / 2.f, size.y / 2.f);

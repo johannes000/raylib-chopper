@@ -4,6 +4,7 @@ Entity::~Entity() {
 }
 
 void Entity::Update() {
+
 	mPosition += mVelocity * GetFrameTime();
 	if (mState == State::Active) {
 		UpdateEntity();

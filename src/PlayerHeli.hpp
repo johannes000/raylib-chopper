@@ -12,6 +12,9 @@ public:
 	void Draw() const override;
 	void ProcessInput() override;
 
+	raylib::Vector2 GetRotationPointWorldPosition() const { return mPosition + mRoationPoint; };
+
 private:
 	raylib::Rectangle mDrawrect;
+	raylib::Vector2 mRoationPoint;
 };
