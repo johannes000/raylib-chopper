@@ -1,9 +1,9 @@
 #include "PlayerHeli.hpp"
 
 PlayerHeli::PlayerHeli(Game *game) : Entity(game) {
-	mDrawrect.SetHeight(100);
-	mDrawrect.SetWidth(200);
-	mMaxMoveSpeed = 400.f;
+	mDrawrect.SetHeight(10);
+	mDrawrect.SetWidth(20);
+	mMaxMoveSpeed = 40.f;
 }
 
 PlayerHeli::~PlayerHeli() {

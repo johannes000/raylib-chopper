@@ -11,6 +11,7 @@ public:
 	void ProcessInput();
 	void RenderGame();
 	void UpdateGame();
+	void UpdateCamera();
 	void Shutdown();
 
 	template <typename T>
@@ -30,7 +31,7 @@ private:
 	std::string mGametitle;
 
 	raylib::Window mWindow;
-	raylib::Camera2D mCamera;
+	raylib::Camera2D mCamera{};
 
 	std::shared_ptr<class PlayerHeli> mPlayer;
 

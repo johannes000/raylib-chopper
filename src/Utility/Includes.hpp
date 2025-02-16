@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <format>
 
 #include "Logger.hpp"
 #include "Types.hpp"
