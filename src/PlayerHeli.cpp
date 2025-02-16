@@ -17,8 +17,6 @@ PlayerHeli::PlayerHeli(Game *game)
 
 	mRoationPoint.y = HeliHeight / 2.f;
 	mRoationPoint.x = HeliWidth * 1.f / 3.f;
-
-	mHasAcceleration = true;
 }
 
 PlayerHeli::~PlayerHeli() {

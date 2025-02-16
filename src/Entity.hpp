@@ -48,8 +48,6 @@ protected:
 
 	State mState;
 
-	bool mHasAcceleration;
-
 	raylib::Vector2 mPosition;
 	raylib::Vector2 mVelocity;
 	f32 mMaxMoveSpeed; // In Einheiten/s
