@@ -4,6 +4,21 @@
 #include "Entity.hpp"
 
 class PlayerHeli : public Entity {
+private:
+	enum struct HorizontalRotationState {
+		Left,
+		LeftMiddle,
+		Middle,
+		RightMiddle,
+		Right
+	};
+
+	enum struct MoveDirection {
+		Left,
+		Right,
+		Stopped
+	};
+
 public:
 	PlayerHeli(Game *game);
 	~PlayerHeli();
@@ -12,9 +27,16 @@ public:
 	void Draw() const override;
 	void ProcessInput() override;
 
-	raylib::Vector2 GetRotationPointWorldPosition() const { return mPosition + mRoationPoint; };
+	void UpdateHorizontalRotationState();
+
+	raylib::Vector2 GetRotationPointWorldPosition() const { return mPosition + GetRotationPoint(); };
+	raylib::Vector2 GetRotationPoint() const;
+
+	f32 mHorizontalRotationTimer;
+	HorizontalRotationState mHorizontalRotationState;
+
+	MoveDirection mMoveDirection;
+	MoveDirection mLastMoveDirection;
 
 private:
-	raylib::Rectangle mDrawrect;
-	raylib::Vector2 mRoationPoint;
 };
