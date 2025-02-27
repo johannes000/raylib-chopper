@@ -44,34 +44,13 @@ void PlayerHeli::Draw() const {
 	f32 rot = MaxRotation * mVelocity.x / mMaxMoveSpeed;
 	// rot = mVelocity.x < 0 ? -rot : rot;
 
-	using enum HorizontalRotationState;
-	switch (mHorizontalRotationState) {
-		case Left: {
-			rect.width = HeliSideWidth;
-			break;
-		}
-		case LeftMiddle: {
-			rect.width = HeliTransitionWidth;
-			break;
-		}
-		case Middle: {
-			rect.width = HeliFrontWidth;
-			break;
-		}
-		case RightMiddle: {
-			rect.width = HeliTransitionWidth;
-			break;
-		}
-		case Right: {
-			rect.width = HeliSideWidth;
-			break;
-		}
-		default: {
-			break;
-		}
-	}
+	Textures::ID texture = Textures::HeliSide;
+	if (mHorizontalRotationState == HorizontalRotationState::Middle)
+		texture = Textures::HeliFront;
+
+	Sprite.Draw(texture, mPosition, rot);
+
 	// mDrawrect.Draw(GetRotationPoint(), rot, YELLOW);
-	rect.Draw(GetRotationPoint(), rot, YELLOW);
 	DrawText(std::format("{:.1f}", mVelocity.Length()).c_str(), mPosition.x, mPosition.y, 1, WHITE);
 }
 

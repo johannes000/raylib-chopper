@@ -11,3 +11,4 @@
 
 #include "Logger.hpp"
 #include "Types.hpp"
+#include "SpriteManager.hpp"

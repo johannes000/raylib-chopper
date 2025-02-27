@@ -48,8 +48,8 @@ void Game::RenderGame() {
 	mCamera.BeginMode();
 	mWindow.ClearBackground(VIOLET);
 
-	mGameBoundry.Draw(BLACK);
-	ground.Draw(GREEN);
+	mGameBoundry.Draw((Color){160, 185, 186, 255});
+	ground.Draw((Color){119, 116, 79, 255});
 
 	for (i32 x = mGameBoundry.x; x < mGameBoundry.width - mGameBoundry.x; x += 100) {
 		DrawRectangle(x - 1, ground.y - 5, 2, 5, BLUE);
@@ -127,6 +127,8 @@ void Game::InitGame() {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	mWindow.Init(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, mGametitle);
 	mWindow.SetTargetFPS(60);
+
+	SpriteManager::Init("assets/Sprite-0001.png");
 
 	f32 fieldWidth = 500.f;
 	f32 fieldHeight = 100.f;

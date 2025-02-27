@@ -24,3 +24,24 @@ constexpr i32 MAP_TILE_SIZE = 16;
 constexpr f32 MAP_TILE_SIZE_F32 = (f32)MAP_TILE_SIZE;
 constexpr i32 UNIT_TILE_SIZE = 16;
 constexpr f32 UNIT_TILE_SIZE_F32 = (f32)UNIT_TILE_SIZE;
+
+namespace TextureAtlas {
+enum ID {
+	NONE,
+
+	Sprites01,
+
+	AtlasCount
+};
+};
+
+namespace Textures {
+enum ID {
+	NONE,
+
+	HeliSide,
+	HeliFront,
+
+	TextureCount,
+};
+};
