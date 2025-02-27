@@ -41,7 +41,7 @@ std::optional<Rectangle> FindTextureRect(const std::unordered_map<Textures::ID, 
 	}
 }
 
-void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation, f32 scale, Color tint) const {
+void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
 	auto rect = FindTextureRect(mTextureRects, id);
 	if (!rect.has_value()) {
 		return;
@@ -53,6 +53,13 @@ void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation
 		position.y,
 		rect->width * scale,
 		rect->height * scale};
+
+	if (hflip) {
+		// sourceRect.x += sourceRect.width;
+		sourceRect.width *= -1;
+	}
+	if (vflip)
+		sourceRect.height *= -1;
 
 	mTexture.Draw(sourceRect,
 				  destRect,

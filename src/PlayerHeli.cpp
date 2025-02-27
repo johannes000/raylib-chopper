@@ -23,7 +23,7 @@ constexpr f32 TimeToHorizontalTransition = .5f; // Wie Lange der Heli braucht um
 PlayerHeli::PlayerHeli(Game *game)
 	: Entity(game),
 	  mHorizontalRotationTimer(0.f),
-	  mHorizontalRotationState(HorizontalRotationState::Middle),
+	  mFaceDirection(FaceDirection::Middle),
 	  mMoveDirection(MoveDirection::Stopped),
 	  mLastMoveDirection(MoveDirection::Stopped) {
 	mMaxMoveSpeed = 50.f;
@@ -34,7 +34,6 @@ PlayerHeli::~PlayerHeli() {
 }
 
 void PlayerHeli::UpdateEntity() {
-	UpdateHorizontalRotationState();
 }
 
 void PlayerHeli::Draw() const {
@@ -45,10 +44,11 @@ void PlayerHeli::Draw() const {
 	// rot = mVelocity.x < 0 ? -rot : rot;
 
 	Textures::ID texture = Textures::HeliSide;
-	if (mHorizontalRotationState == HorizontalRotationState::Middle)
+	if (mFaceDirection == FaceDirection::Middle)
 		texture = Textures::HeliFront;
 
-	Sprite.Draw(texture, mPosition, rot);
+	bool hflip = mFaceDirection == FaceDirection::Left;
+	Sprite.Draw(texture, mPosition, rot, hflip);
 
 	// mDrawrect.Draw(GetRotationPoint(), rot, YELLOW);
 	DrawText(std::format("{:.1f}", mVelocity.Length()).c_str(), mPosition.x, mPosition.y, 1, WHITE);
@@ -84,56 +84,25 @@ void PlayerHeli::ProcessInput() {
 	raylib::Vector2 targetVelocity = moveDir * mMaxMoveSpeed;
 
 	mVelocity = mVelocity + (targetVelocity - mVelocity) * mAcceleration * GetFrameTime();
+
+	// Face Direction
+	auto mouseX = GetMousePosition().x;
+	f32 drittelRenderWidth = GetRenderWidth() / 3;
+	if (mouseX < drittelRenderWidth) {
+		mFaceDirection = FaceDirection::Left;
+	} else if (mouseX > drittelRenderWidth * 2) {
+		mFaceDirection = FaceDirection::Right;
+	} else {
+		mFaceDirection = FaceDirection::Middle;
+	}
+
 	// if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	// 	FireProjectile();
 	// if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	// 	FireRocket();
 }
 
-void PlayerHeli::UpdateHorizontalRotationState() {
-	if (mMoveDirection == MoveDirection::Stopped)
-		return;
-
-	if (mMoveDirection != mLastMoveDirection) {
-		mHorizontalRotationTimer = 0.f;
-		return;
-	}
-
-	if (mLastMoveDirection == mMoveDirection) {
-		mHorizontalRotationTimer += GetFrameTime();
-	}
-
-	if (mHorizontalRotationTimer > TimeToHorizontalTransition) {
-		mHorizontalRotationTimer = 0.f;
-
-		i32 state = static_cast<i32>(mHorizontalRotationState);
-		state = mMoveDirection == MoveDirection::Left ? state - 1 : state + 1;
-		state = std::clamp(state, static_cast<i32>(HorizontalRotationState::Left), static_cast<i32>(HorizontalRotationState::Right));
-
-		mHorizontalRotationState = static_cast<HorizontalRotationState>(state);
-	}
-}
-
 raylib::Vector2 PlayerHeli::GetRotationPoint() const {
-	using enum HorizontalRotationState;
-	switch (mHorizontalRotationState) {
-		case Left: {
-			return raylib::Vector2(RoationPointLeft, RotationPointHeight);
-		}
-		case LeftMiddle: {
-			return raylib::Vector2(RotationPointTransitionLeft, RotationPointHeight);
-		}
-		case Middle: {
-			return raylib::Vector2(RotationPointFront, RotationPointHeight);
-		}
-		case RightMiddle: {
-			return raylib::Vector2(RotationPointTransitionRight, RotationPointHeight);
-		}
-		case Right: {
-			return raylib::Vector2(RoationPointRight, RotationPointHeight);
-		}
-		default: {
-			return raylib::Vector2(RotationPointFront, RotationPointHeight);
-		}
-	}
+	using enum FaceDirection;
+	return raylib::Vector2(RotationPointFront, RotationPointHeight);
 }

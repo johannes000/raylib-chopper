@@ -5,11 +5,9 @@
 
 class PlayerHeli : public Entity {
 private:
-	enum struct HorizontalRotationState {
+	enum struct FaceDirection {
 		Left,
-		LeftMiddle,
 		Middle,
-		RightMiddle,
 		Right
 	};
 
@@ -27,13 +25,11 @@ public:
 	void Draw() const override;
 	void ProcessInput() override;
 
-	void UpdateHorizontalRotationState();
-
 	raylib::Vector2 GetRotationPointWorldPosition() const { return mPosition + GetRotationPoint(); };
 	raylib::Vector2 GetRotationPoint() const;
 
 	f32 mHorizontalRotationTimer;
-	HorizontalRotationState mHorizontalRotationState;
+	FaceDirection mFaceDirection;
 
 	MoveDirection mMoveDirection;
 	MoveDirection mLastMoveDirection;

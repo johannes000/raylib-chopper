@@ -64,7 +64,21 @@ void Game::RenderGame() {
 	mCamera.EndMode();
 
 	// UI
+
+	Color c = BLUE;
+	c.a *= 0.5f;
+	DrawRectangle(0, 0, GetRenderWidth() / 3, GetRenderHeight(), c);
+	c = RED;
+	c.a *= .5f;
+	DrawRectangle(GetRenderWidth() / 3, 0, GetRenderWidth() / 3, GetRenderHeight(), c);
+	c = YELLOW;
+	c.a *= .5f;
+	DrawRectangle(GetRenderWidth() / 3 * 2, 0, GetRenderWidth() / 3, GetRenderHeight(), c);
+
 	DrawFPS(20, 20);
+	auto [mX, mY] = GetMousePosition();
+	DrawText(std::format("{} {}", mX, mY).c_str(), 20, 40, 4, RED);
+
 	mWindow.EndDrawing();
 }
 

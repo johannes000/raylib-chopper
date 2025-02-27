@@ -13,7 +13,7 @@ public:
 
 	void AddTextureRect(Textures::ID id, raylib::Rectangle rect);
 
-	void Draw(Textures::ID id, raylib::Vector2 position, f32 rotation = 0.0f, f32 scale = 1.0f, Color tint = WHITE) const;
+	void Draw(Textures::ID id, raylib::Vector2 position, f32 rotation, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
 
 private:
 	SpriteManager(const std::string &texturePath);
