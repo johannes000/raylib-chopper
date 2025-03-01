@@ -35,4 +35,5 @@ public:
 	MoveDirection mLastMoveDirection;
 
 private:
+	raylib::Rectangle GetCurrentTextureRect() const;
 };

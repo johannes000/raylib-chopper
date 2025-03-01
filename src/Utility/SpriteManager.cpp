@@ -17,6 +17,7 @@ void SpriteManager::Init(const std::string &texturePath) {
 
 	Sprite.AddTextureRect(Textures::HeliSide, raylib::Rectangle(112, 32, 32, 16));
 	Sprite.AddTextureRect(Textures::HeliFront, raylib::Rectangle(144, 32, 16, 16));
+	Sprite.AddTextureRect(Textures::HeliRotor, raylib::Rectangle(112, 48, 47, 1));
 }
 
 void SpriteManager::Shutdown() {
@@ -39,6 +40,14 @@ std::optional<Rectangle> FindTextureRect(const std::unordered_map<Textures::ID, 
 		LOG.error("{} Kann die Textur mit der ID {} nicht finden.", __FUNCTION__, (i32)id);
 		return std::nullopt;
 	}
+}
+
+raylib::Rectangle SpriteManager::GetTextureRect(Textures::ID id) {
+	auto rect = FindTextureRect(mTextureRects, id);
+	if (!rect.has_value()) {
+		return raylib::Rectangle{};
+	}
+	return rect.value();
 }
 
 void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
@@ -64,6 +73,30 @@ void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation
 	mTexture.Draw(sourceRect,
 				  destRect,
 				  {destRect.width / 2, destRect.height / 2}, // Origin
+				  rotation,
+				  tint);
+}
+
+void SpriteManager::DrawSegment(raylib::Vector2 position, raylib::Rectangle sourceRect,
+								raylib::Vector2 origin, f32 rotation,
+								bool hflip, bool vflip, f32 scale,
+								Color tint) const {
+	raylib::Rectangle destRect = {
+		position.x,
+		position.y,
+		sourceRect.width * scale,
+		sourceRect.height * scale};
+
+	if (hflip) {
+		// sourceRect.x += sourceRect.width;
+		sourceRect.width *= -1;
+	}
+	if (vflip)
+		sourceRect.height *= -1;
+
+	mTexture.Draw(sourceRect,
+				  destRect,
+				  origin,
 				  rotation,
 				  tint);
 }

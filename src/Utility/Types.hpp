@@ -41,6 +41,7 @@ enum ID {
 
 	HeliSide,
 	HeliFront,
+	HeliRotor,
 
 	TextureCount,
 };
