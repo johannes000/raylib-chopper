@@ -61,6 +61,9 @@ void Game::RenderGame() {
 
 	mGameBoundry.DrawLines(BLUE);
 
+	auto [rotX, rotY] = mPlayer->GetRotationPointWorldPosition();
+	DrawCircle(rotX, rotY, 0.2, BLUE);
+
 	mCamera.EndMode();
 
 	// UI
@@ -73,7 +76,8 @@ void Game::RenderGame() {
 }
 
 void Game::UpdateCamera() {
-	mCamera.SetTarget(mPlayer->GetRotationPointWorldPosition());
+
+	mCamera.SetTarget(raylib::Vector2{mPlayer->GetRotationPointWorldPosition().x, 20});
 
 	const auto size = mWindow.GetSize();
 	const auto offset = raylib::Vector2(size.x / 2.f, size.y / 2.f);

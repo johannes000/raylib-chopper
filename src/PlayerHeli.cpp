@@ -3,8 +3,7 @@
 
 namespace {
 constexpr f32 MaxRotation = 45.f;
-
-constexpr f32 TimeToHorizontalTransition = .5f; // Wie Lange der Heli braucht um von einem HorizontalRotationState zum nächsten zu transitionen in Sekunden
+constexpr f32 RotorFrq = 2.f; // Wie oft der Rotor pro sekunde flipt
 
 }; // namespace
 
@@ -22,13 +21,17 @@ PlayerHeli::~PlayerHeli() {
 }
 
 void PlayerHeli::UpdateEntity() {
+	mRotorFliptime += GetFrameTime();
+	const f32 rotorFlipTrechholdTime = 1.f / RotorFrq;
+	if (mRotorFliptime >= rotorFlipTrechholdTime) {
+		mRotorFlip = !mRotorFlip;
+		mRotorFliptime -= rotorFlipTrechholdTime;
+	}
 }
 
 void PlayerHeli::Draw() const {
 	const auto [posX, posY] = GetPosition();
 	const auto drawRect = GetCurrentTextureRect();
-
-	auto [rotX, rotY] = GetRotationPoint();
 
 	f32 rot = MaxRotation * mVelocity.x / mMaxMoveSpeed;
 
@@ -37,23 +40,22 @@ void PlayerHeli::Draw() const {
 		texture = Textures::HeliFront;
 
 	bool hflip = mFaceDirection == FaceDirection::Left;
-	Sprite.Draw(texture, mPosition, rot, hflip, false, 1.f);
+	Sprite.Draw(texture, GetRotationPointWorldPosition(), rot, hflip, false, 1.f);
 
 	static i32 rotorCount = 0;
-	auto rotorRect = Sprite.GetTextureRect(Textures::HeliRotor);
-	auto rotorSegment = raylib::Rectangle{rotorRect.x, rotorRect.y, 24, 1};
 
-	static bool rotorFlip = false;
-	rotorFlip = !rotorFlip;
+	auto [rotX, rotY] = GetRotationPoint();
+	auto [rotorPosX, rotorPosY] = GetRotationPointWorldPosition();
 
-	Sprite.DrawSegment(raylib::Vector2(posX + (rotorSegment.width / 2), posY), rotorSegment, raylib::Vector2(rotX, rotY), rot, rotorFlip, false, 1.f);
+	raylib::Vector2 rotorOffset{0, -6.f};
+	rotorOffset = rotorOffset.Rotate(rot * DEG2RAD);
 
-	// mDrawrect.Draw(GetRotationPoint(), rot, YELLOW);
+	Sprite.Draw(Textures::HeliRotor, raylib::Vector2(rotorPosX, rotorPosY) + rotorOffset, rot, mRotorFlip, false, 1.f, WHITE);
+
 	DrawText(std::format("{:.1f}", mVelocity.Length()).c_str(), mPosition.x, mPosition.y, 1, WHITE);
 }
 
 void PlayerHeli::ProcessInput() {
-
 	mLastMoveDirection = mMoveDirection;
 	mMoveDirection = MoveDirection::Stopped;
 	raylib::Vector2 moveDir{0, 0};
@@ -101,24 +103,21 @@ void PlayerHeli::ProcessInput() {
 }
 
 raylib::Vector2 PlayerHeli::GetRotationPoint() const {
+	return raylib::Vector2(39.f / 2, 4.f);
 	using enum FaceDirection;
 	switch (mFaceDirection) {
 
 		case Middle: {
-			const auto rect = GetCurrentTextureRect();
-			const f32 rotX = rect.width / 2.f;
-			const f32 rotY = rect.height / 2.f;
-
+			const f32 rotX = 7.5f;
+			const f32 rotY = 4.f;
 			return raylib::Vector2(rotX, rotY);
 		}
 
 		case Left:
 		case Right:
 		default: {
-			const auto rect = GetCurrentTextureRect();
-			const f32 rotX = rect.width / 2.f;
-			const f32 rotY = rect.height / 2.f;
-
+			const f32 rotX = 22.f;
+			const f32 rotY = 4.f;
 			return raylib::Vector2(rotX, rotY);
 		}
 	}

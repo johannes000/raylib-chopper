@@ -36,4 +36,7 @@ public:
 
 private:
 	raylib::Rectangle GetCurrentTextureRect() const;
+
+	bool mRotorFlip;
+	f32 mRotorFliptime;
 };

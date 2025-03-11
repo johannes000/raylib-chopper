@@ -29,6 +29,14 @@ if(NOT raylib_FOUND)
     FetchContent_MakeAvailable(raylib)
 endif()
 
+set(BUILD_PATH ${PROJECT_SOURCE_DIR}/build/bin/Debug)
+
+
+set(EXECUTABLE_OUTPUT_PATH ${BUILD_PATH})
+set(LIBRARY_OUTPUT_PATH ${BUILD_PATH})
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
+
 # Alle .cpp- und .hpp-Dateien rekursiv suchen
 file(GLOB_RECURSE SOURCES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
@@ -53,11 +61,11 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 # Assets kopieren
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/assets
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
-    COMMENT "Copying assets folder to binary directory"
+set(SOURCE_ASSETS_DIR ${CMAKE_SOURCE_DIR})
+set(DEST_ASSETS_DIR ${EXECUTABLE_OUTPUT_PATH})
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E env cmd /c ${CMAKE_SOURCE_DIR}/copy_assets.bat ${SOURCE_ASSETS_DIR} ${DEST_ASSETS_DIR}
+    COMMENT "Copying assets folder"
 )
 
 
