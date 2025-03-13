@@ -5,6 +5,13 @@
 
 #include <format>
 
+namespace {
+constexpr f32 GROUND_HEIGHT = 20.f;
+
+constexpr f32 FIELD_WIDTH = 500.f;
+constexpr f32 FIELD_HEIGHT = 100.f;
+} // namespace
+
 Game::Game() {
 }
 
@@ -40,19 +47,15 @@ void Game::RenderGame() {
 	std::vector<std::shared_ptr<Entity>> drawableEntities;
 	std::copy(mEntitys.begin(), mEntitys.end(), std::back_inserter(drawableEntities));
 
-	static auto ground = raylib::Rectangle{mGameBoundry.GetPosition(), mGameBoundry.GetSize()};
-	ground.SetHeight(10);
-	ground.SetY(mGameBoundry.height - ground.height);
-
 	mWindow.BeginDrawing();
 	mCamera.BeginMode();
 	mWindow.ClearBackground(VIOLET);
 
 	mGameBoundry.Draw((Color){160, 185, 186, 255});
-	ground.Draw((Color){119, 116, 79, 255});
+	mGroundRect.Draw((Color){119, 116, 79, 255});
 
 	for (i32 x = mGameBoundry.x; x < mGameBoundry.width - mGameBoundry.x; x += 100) {
-		DrawRectangle(x - 1, ground.y - 5, 2, 5, BLUE);
+		DrawRectangle(x - 1, mGroundRect.y - 5, 2, 5, BLUE);
 	}
 
 	for (auto &e : drawableEntities) {
@@ -102,6 +105,13 @@ void Game::UpdateGame() {
 
 	for (auto &e : mEntitys) {
 		e->Update();
+		if (e->CheckGroundCollision(mGroundRect)) {
+			e->OnGroundCollision(mGroundRect);
+		}
+		if (
+			e->CheckMapBoundryCollision(mGameBoundry)) {
+			e->OnMapBoundryCollision(mGameBoundry);
+		}
 	}
 
 	UpdateCamera();
@@ -138,16 +148,18 @@ void Game::InitGame() {
 
 	SpriteManager::Init("assets/Sprite-0001.png");
 
-	f32 fieldWidth = 500.f;
-	f32 fieldHeight = 100.f;
-	mGameBoundry.SetSize(fieldWidth, fieldHeight);
-	// mGameBoundry.SetPosition(-(fieldWidth / 2), 0);
+	mGameBoundry.SetSize(FIELD_WIDTH, FIELD_HEIGHT);
+	// mGameBoundry.SetPosition(-(FIELD_WIDTH / 2), 0);
 	mGameBoundry.SetPosition(0.f, 0.f);
+
+	mGroundRect = raylib::Rectangle{mGameBoundry.GetPosition(), mGameBoundry.GetSize()};
+	mGroundRect.SetHeight(GROUND_HEIGHT);
+	mGroundRect.SetY(mGameBoundry.height - mGroundRect.height);
 
 	mCamera.SetZoom(7.0);
 
 	auto heli = std::make_shared<PlayerHeli>(this);
-	heli->SetPosition(fieldWidth / 2, fieldHeight / 2);
+	heli->SetPosition(FIELD_WIDTH / 2, FIELD_HEIGHT / 2);
 	mPlayer = heli;
 	AddEntity(heli);
 

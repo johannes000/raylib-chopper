@@ -1,8 +1,14 @@
 #pragma once
 
 #include "Utility\Includes.hpp"
+#include <array>
 
 class Game;
+
+struct CollisionData {
+	raylib::Rectangle CollisionRect{};
+	raylib::Vector2 CollisionRectOffset{};
+};
 
 class Entity {
 public:
@@ -23,8 +29,18 @@ public:
 	virtual void Draw() const;
 	virtual void ProcessInput();
 
-	State
-	GetState() const { return mState; }
+	virtual bool CheckGroundCollision(raylib::Rectangle groundRect); // return true bei Kollision
+	virtual bool CheckMapBoundryCollision(raylib::Rectangle bounds); // return true bei Kollision
+
+	virtual void OnGroundCollision(raylib::Rectangle groundRect);
+	virtual void OnMapBoundryCollision(raylib::Rectangle bounds);
+
+	virtual CollisionData GetCurrentCollisionData() const;
+	virtual void UpdateCollisionData();
+
+	std::array<raylib::Vector2, 4> GetTransformedCollisionRect() const;
+
+	State GetState() const { return mState; }
 	void SetState(State state) { mState = state; }
 
 	const raylib::Vector2 GetPosition() const { return mPosition; }
@@ -55,4 +71,7 @@ protected:
 
 	f32 mScale;
 	f32 mRotation;
+
+	raylib::Rectangle mCollisionRect;
+	raylib::Vector2 mCollisionRectOffset;
 };

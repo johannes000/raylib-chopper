@@ -25,8 +25,17 @@ public:
 	void Draw() const override;
 	void ProcessInput() override;
 
+	bool CheckGroundCollision(raylib::Rectangle groundRect) override; // return true bei Kollision
+	bool CheckMapBoundryCollision(raylib::Rectangle bounds) override; // return true bei Kollision
+
+	void OnGroundCollision(raylib::Rectangle groundRect) override;
+	void OnMapBoundryCollision(raylib::Rectangle bounds) override;
+
 	raylib::Vector2 GetRotationPointWorldPosition() const { return mPosition + GetRotationPoint(); };
 	raylib::Vector2 GetRotationPoint() const;
+
+	inline CollisionData GetCurrentCollisionData() const override;
+	void UpdateCollisionData() override;
 
 	f32 mHorizontalRotationTimer;
 	FaceDirection mFaceDirection;
