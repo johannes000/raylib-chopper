@@ -27,7 +27,6 @@ void RaylibLogCallback(int logLevel, const char *text, va_list args) {
 i32 main(int /* argc */, char ** /* argv */) {
 	AddLogger("RAY");
 	AddLogger("GAM");
-	AddLogger("SPR");
 	AddLogger("ENT");
 
 	SetTraceLogCallback(RaylibLogCallback);

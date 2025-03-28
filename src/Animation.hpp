@@ -6,7 +6,7 @@
 #include <string>
 
 struct AnimationFrame {
-	Textures::ID textureID;
+	Sprites::ID spriteID;
 	f32 duration;
 };
 
@@ -18,13 +18,19 @@ public:
 	void Update();
 	void Reset();
 
-	Textures::ID GetCurrentFrame() const { return mFrames[mCurrentFrame].textureID; }
+	void Play();
+	void Stop();
+
+	Sprites::ID GetCurrentFrame() const { return mFrames[mCurrentFrame].spriteID; }
 	bool IsComplete() { return mComplete; }
 
 private:
 	std::vector<AnimationFrame> mFrames;
-	i32 mCurrentFrame{0};
+	size_t mCurrentFrame{0};
 	f32 mFrameTime{0.f};
+
 	bool mLooping{true};
 	bool mComplete{false};
+
+	bool mIsPlaying{false};
 };

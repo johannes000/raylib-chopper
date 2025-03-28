@@ -6,7 +6,7 @@ Animation::Animation(const std::vector<AnimationFrame> &frames, bool looping)
 }
 
 void Animation::Update() {
-	if (mComplete)
+	if (mComplete || !mIsPlaying)
 		return;
 	mFrameTime += GetFrameTime();
 
@@ -28,4 +28,12 @@ void Animation::Reset() {
 	mCurrentFrame = 0;
 	mFrameTime = 0.f;
 	mComplete = false;
+}
+
+void Animation::Play() {
+	mIsPlaying = true;
+}
+
+void Animation::Stop() {
+	mIsPlaying = false;
 }

@@ -14,9 +14,12 @@ void SpriteManager::Init(const std::string &texturePath) {
 	Instance = new SpriteManager(texturePath);
 	assert(Instance);
 
-	Sprite.AddTextureRect(Textures::HeliSide, raylib::Rectangle(0, 0, 39, 13));
-	Sprite.AddTextureRect(Textures::HeliFront, raylib::Rectangle(0, 13, 39, 13));
-	Sprite.AddTextureRect(Textures::HeliRotor, raylib::Rectangle(0, 27, 39, 1));
+	SpriteM.AddSprite(Sprites::PlayerIdle_1, {raylib::Rectangle(0, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::PlayerIdle_2, {raylib::Rectangle(16, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::PlayerIdle_3, {raylib::Rectangle(32, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::PlayerIdle_4, {raylib::Rectangle(48, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::PlayerIdle_5, {raylib::Rectangle(64, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::PlayerIdle_6, {raylib::Rectangle(80, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
 }
 
 void SpriteManager::Shutdown() {
@@ -27,11 +30,11 @@ SpriteManager &SpriteManager::GetInstance() {
 	return *Instance;
 }
 
-void SpriteManager::AddTextureRect(Textures::ID id, raylib::Rectangle rect) {
-	mTextureRects[id] = rect;
+void SpriteManager::AddSprite(Sprites::ID id, Sprite sprite) {
+	mTextures[id] = sprite;
 }
 
-std::optional<Rectangle> FindTextureRect(const std::unordered_map<Textures::ID, raylib::Rectangle> &textureRects, Textures::ID id) {
+std::optional<Sprite> FindTextureRect(const std::unordered_map<Sprites::ID, Sprite> &textureRects, Sprites::ID id) {
 	auto log = spdlog::get("SPRM");
 	auto it = textureRects.find(id);
 	if (it != textureRects.end()) {
@@ -42,26 +45,27 @@ std::optional<Rectangle> FindTextureRect(const std::unordered_map<Textures::ID, 
 	}
 }
 
-raylib::Rectangle SpriteManager::GetTextureRect(Textures::ID id) {
-	auto rect = FindTextureRect(mTextureRects, id);
+Sprite SpriteManager::GetSprite(Sprites::ID id) {
+	auto rect = FindTextureRect(mTextures, id);
 	if (!rect.has_value()) {
-		return raylib::Rectangle{};
+		return Sprite{};
 	}
 	return rect.value();
 }
 
-void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, raylib::Vector2 origin, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
-	auto rect = FindTextureRect(mTextureRects, id);
+void SpriteManager::Draw(Sprites::ID id, raylib::Vector2 position, raylib::Vector2 origin, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
+	auto rect = FindTextureRect(mTextures, id);
 	if (!rect.has_value()) {
 		return;
 	}
-	raylib::Rectangle sourceRect = rect.value();
+	auto sprite = rect.value();
+	raylib::Rectangle sourceRect = sprite.drawRect;
 
 	raylib::Rectangle destRect = {
 		position.x,
 		position.y,
-		rect->width * scale,
-		rect->height * scale};
+		sourceRect.width * scale,
+		sourceRect.height * scale};
 
 	if (hflip) {
 		// sourceRect.x += sourceRect.width;
@@ -78,12 +82,12 @@ void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, raylib::Vect
 				  tint);
 }
 
-void SpriteManager::Draw(Textures::ID id, raylib::Vector2 position, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
-	auto rect = FindTextureRect(mTextureRects, id);
-	if (!rect.has_value()) {
+void SpriteManager::Draw(Sprites::ID id, raylib::Vector2 position, f32 rotation, bool hflip, bool vflip, f32 scale, Color tint) const {
+	auto sprite = FindTextureRect(mTextures, id);
+	if (!sprite.has_value()) {
 		return;
 	}
-	Draw(id, position, {rect->width * scale / 2, rect->height * scale / 2}, rotation, hflip, vflip, scale, tint);
+	Draw(id, position, sprite->origin, rotation, hflip, vflip, scale, tint);
 }
 
 void SpriteManager::DrawSegment(raylib::Vector2 position, raylib::Rectangle sourceRect,

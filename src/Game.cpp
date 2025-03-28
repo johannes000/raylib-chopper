@@ -45,6 +45,9 @@ void Game::ProcessInput() {
 void Game::RenderGame() {
 	std::vector<std::shared_ptr<Entity>> drawableEntities;
 	std::copy(mEntitys.begin(), mEntitys.end(), std::back_inserter(drawableEntities));
+	auto mouse = GetMousePosition();
+
+	mouse = mCamera.GetScreenToWorld(mouse);
 
 	mWindow.BeginDrawing();
 	mCamera.BeginMode();
@@ -52,6 +55,8 @@ void Game::RenderGame() {
 
 	mGameBoundry.Draw((Color){160, 185, 186, 255});
 	mGroundRect.Draw((Color){119, 116, 79, 255});
+	auto testSprite = mTestAnimation.GetCurrentFrame();
+	SpriteM.Draw(testSprite, raylib::Vector2(20.f, 1.f), 0.f);
 
 	for (i32 x = mGameBoundry.x; x < mGameBoundry.width - mGameBoundry.x; x += 100) {
 		DrawRectangle(x - 1, mGroundRect.y - 5, 2, 5, BLUE);
@@ -80,6 +85,7 @@ void Game::UpdateCamera() {
 	const auto offset = raylib::Vector2(size.x / 2.f, size.y / 2.f);
 	mCamera.SetOffset(offset);
 
+	mCamera.SetTarget(raylib::Vector2(20.f, 1.f));
 	const f32 zoomFactor = 1.0f / mCamera.zoom / 2.0f;
 
 	const f32 viewportX = size.x * zoomFactor;
@@ -96,6 +102,8 @@ void Game::UpdateCamera() {
 }
 
 void Game::UpdateGame() {
+
+	mTestAnimation.Update();
 
 	for (auto &e : mEntitys) {
 		e->Update();
@@ -141,6 +149,7 @@ void Game::InitGame() {
 	mWindow.SetTargetFPS(60);
 
 	SpriteManager::Init("assets/Sprite-0001.png");
+	AnimationManager::Init();
 
 	mGameBoundry.SetSize(FIELD_WIDTH, FIELD_HEIGHT);
 	// mGameBoundry.SetPosition(-(FIELD_WIDTH / 2), 0);
@@ -151,6 +160,8 @@ void Game::InitGame() {
 	mGroundRect.SetY(mGameBoundry.height - mGroundRect.height);
 
 	mCamera.SetZoom(7.0);
+	mTestAnimation = AniM.GetAnimation(Animations::ID::PlayerIdle);
+	mTestAnimation.Play();
 
 	log->info("Game Init fertig.");
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include "Utility\Includes.hpp"
+#include "Utility\AnimationManager.hpp"
+
 class Entity;
+
 class Game {
 public:
 	Game();
@@ -40,6 +43,8 @@ private:
 
 	raylib::Rectangle mGameBoundry;
 	raylib::Rectangle mGroundRect;
+
+	Animation mTestAnimation;
 
 private:
 	LogPtr log = spdlog::get("GAM");
