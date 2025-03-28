@@ -42,5 +42,5 @@ private:
 	raylib::Rectangle mGroundRect;
 
 private:
-	LogPtr log = spdlog::get("GAME");
+	LogPtr log = spdlog::get("GAM");
 };

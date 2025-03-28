@@ -27,7 +27,7 @@ private:
 
 	static SpriteManager *Instance;
 
-	LogPtr mLog = spdlog::get("SPRM");
+	LogPtr mLog = spdlog::get("SPR");
 };
 
 #define Sprite SpriteManager::GetInstance()

@@ -59,6 +59,9 @@ public:
 
 	Game &GetGame() { return *mGame; }
 
+private:
+	LogPtr log = spdlog::get("ENT");
+
 protected:
 	Game *mGame;
 

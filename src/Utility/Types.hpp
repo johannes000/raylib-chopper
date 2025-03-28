@@ -43,6 +43,17 @@ enum ID {
 	HeliFront,
 	HeliRotor,
 
-	TextureCount,
+	TextureCount
 };
 };
+
+namespace Animations {
+enum class ID {
+	NONE,
+	PlayerIdle,
+	PlayerRun,
+	PlayerJump,
+
+	AnimationCount
+};
+}

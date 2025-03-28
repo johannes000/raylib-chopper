@@ -1,7 +1,6 @@
 #include "Game.hpp"
 
 #include "Entity.hpp"
-#include "PlayerHeli.hpp"
 
 #include <format>
 
@@ -64,9 +63,6 @@ void Game::RenderGame() {
 
 	mGameBoundry.DrawLines(BLUE);
 
-	auto [rotX, rotY] = mPlayer->GetRotationPointWorldPosition();
-	DrawCircle(rotX, rotY, 0.2, BLUE);
-
 	mCamera.EndMode();
 
 	// UI
@@ -79,8 +75,6 @@ void Game::RenderGame() {
 }
 
 void Game::UpdateCamera() {
-
-	mCamera.SetTarget(raylib::Vector2{mPlayer->GetRotationPointWorldPosition().x, 20});
 
 	const auto size = mWindow.GetSize();
 	const auto offset = raylib::Vector2(size.x / 2.f, size.y / 2.f);
@@ -157,11 +151,6 @@ void Game::InitGame() {
 	mGroundRect.SetY(mGameBoundry.height - mGroundRect.height);
 
 	mCamera.SetZoom(7.0);
-
-	auto heli = std::make_shared<PlayerHeli>(this);
-	heli->SetPosition(FIELD_WIDTH / 2, FIELD_HEIGHT / 2);
-	mPlayer = heli;
-	AddEntity(heli);
 
 	log->info("Game Init fertig.");
 }
