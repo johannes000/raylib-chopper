@@ -17,7 +17,7 @@ public:
 	template <typename T>
 	Entity *AddEntity(std::shared_ptr<T> entity) {
 		if (!std::is_base_of_v<Entity, T>) {
-			LOG.warning("T muss von Entity vererbt sein");
+			log->warn("T muss von Entity vererbt sein");
 			return nullptr;
 		}
 		// auto castEntity = std::static_pointer_cast<Entity>(entity);
@@ -42,4 +42,5 @@ private:
 	raylib::Rectangle mGroundRect;
 
 private:
+	LogPtr log = spdlog::get("GAME");
 };

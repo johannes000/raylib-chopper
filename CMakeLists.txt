@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.31.0)
 project(HeliHero VERSION 0.1.0 LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
@@ -10,6 +10,13 @@ message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 # Abhängigkeiten
 include(cmake/CPM.cmake)
 include(cmake/warnings.cmake)
+
+CPMAddPackage(
+  NAME spdlog
+  GITHUB_REPOSITORY gabime/spdlog
+  VERSION 1.15.1
+  OPTIONS "SPDLOG_BUILD_SHARED OFF" "SPDLOG_BUILD_STATIC ON"
+)
 
 # raylib-cpp
 CPMAddPackage(
@@ -30,8 +37,6 @@ if(NOT raylib_FOUND)
 endif()
 
 set(BUILD_PATH ${PROJECT_SOURCE_DIR}/build/bin/Debug)
-
-
 set(EXECUTABLE_OUTPUT_PATH ${BUILD_PATH})
 set(LIBRARY_OUTPUT_PATH ${BUILD_PATH})
 
@@ -58,6 +63,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 # Link-Bibliotheken
 target_link_libraries(${PROJECT_NAME} PRIVATE
     raylib
+    spdlog::spdlog
 )
 
 # Assets kopieren

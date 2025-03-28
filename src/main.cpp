@@ -2,28 +2,34 @@
 #include "Game.hpp"
 
 void RaylibLogCallback(int logLevel, const char *text, va_list args) {
+	auto log = spdlog::get("RAY");
 	char buffer[4096];
 	vsnprintf(buffer, sizeof(buffer), text, args);
 	switch (logLevel) {
 		case LOG_ERROR:
-			LOG.error("Raylib: {}", buffer);
+			log->error(buffer);
 			break;
 		case LOG_WARNING:
-			LOG.warning("Raylib: {}", buffer);
+			log->warn(buffer);
 			break;
 		case LOG_INFO:
-			LOG.info("Raylib: {}", buffer);
+			log->info(buffer);
 			break;
 		case LOG_FATAL:
-			LOG.fatal("Raylib: {}", buffer);
+			log->critical(buffer);
 			break;
 		default:
-			LOG.info("Raylib: {}", buffer);
+			log->info(buffer);
 			break;
 	}
 }
 
 i32 main(int /* argc */, char ** /* argv */) {
+
+	AddLogger("RAY");
+	AddLogger("GAME");
+	AddLogger("SPRM");
+
 	SetTraceLogCallback(RaylibLogCallback);
 
 	Game game;

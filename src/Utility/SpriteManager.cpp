@@ -1,5 +1,4 @@
 #include "SpriteManager.hpp"
-#include <cassert>
 
 SpriteManager *SpriteManager::Instance = nullptr;
 
@@ -33,11 +32,12 @@ void SpriteManager::AddTextureRect(Textures::ID id, raylib::Rectangle rect) {
 }
 
 std::optional<Rectangle> FindTextureRect(const std::unordered_map<Textures::ID, raylib::Rectangle> &textureRects, Textures::ID id) {
+	auto log = spdlog::get("SPRM");
 	auto it = textureRects.find(id);
 	if (it != textureRects.end()) {
 		return it->second;
 	} else {
-		LOG.error("{} Kann die Textur mit der ID {} nicht finden.", __FUNCTION__, (i32)id);
+		log->error("{} Kann die Textur mit der ID {} nicht finden.", __FUNCTION__, (i32)id);
 		return std::nullopt;
 	}
 }

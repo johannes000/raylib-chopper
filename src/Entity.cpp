@@ -43,21 +43,26 @@ void Entity::UpdateCollisionData() {
 }
 
 std::array<raylib::Vector2, 4> Entity::GetTransformedCollisionRect() const {
+	raylib::Vector2 center = {
+		mCollisionRect.x + mCollisionRect.width / 2.0f,
+		mCollisionRect.y + mCollisionRect.height / 2.0f};
+
 	std::array<raylib::Vector2, 4> corners = {
-		raylib::Vector2{mCollisionRect.x, mCollisionRect.y},
-		raylib::Vector2{mCollisionRect.x + mCollisionRect.width, mCollisionRect.y},
-		raylib::Vector2{mCollisionRect.x + mCollisionRect.width, mCollisionRect.y + mCollisionRect.height},
-		raylib::Vector2{mCollisionRect.x, mCollisionRect.y + mCollisionRect.height}};
+		raylib::Vector2{mCollisionRect.x - center.x, mCollisionRect.y - center.y},
+		raylib::Vector2{mCollisionRect.x + mCollisionRect.width - center.x, mCollisionRect.y - center.y},
+		raylib::Vector2{mCollisionRect.x + mCollisionRect.width - center.x, mCollisionRect.y + mCollisionRect.height - center.y},
+		raylib::Vector2{mCollisionRect.x - center.x, mCollisionRect.y + mCollisionRect.height - center.y}};
 
-	const f32 sinRotation = sinf(mRotation * DEG2RAD);
-	const f32 cosRotation = cosf(mRotation * DEG2RAD);
+	if (mRotation != 0.f) {
+		const f32 sinRotation = sinf(mRotation * DEG2RAD);
+		const f32 cosRotation = cosf(mRotation * DEG2RAD);
 
-	for (auto &corner : corners) {
-		// Rotieren
-
-		corner.x = corner.x * cosRotation - corner.y * sinRotation;
-
-		corner.y = corner.x * sinRotation + corner.y * cosRotation;
+		for (auto &corner : corners) {
+			f32 x = corner.x * cosRotation - corner.y * sinRotation;
+			f32 y = corner.x * sinRotation + corner.y * cosRotation;
+			corner.x = x + center.x;
+			corner.y = y + center.y;
+		}
 	}
 	return corners;
 }

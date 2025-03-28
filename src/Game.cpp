@@ -19,7 +19,7 @@ Game::~Game() {
 }
 
 i32 Game::Run() {
-	LOG.info("Game {}", "Runs");
+	log->info("Game {}", "Runs");
 	InitGame();
 
 	while (!WindowShouldClose()) {
@@ -163,5 +163,5 @@ void Game::InitGame() {
 	mPlayer = heli;
 	AddEntity(heli);
 
-	LOG.info("Game Init fertig.");
+	log->info("Game Init fertig.");
 }

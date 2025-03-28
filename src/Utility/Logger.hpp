@@ -1,102 +1,33 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <format>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <memory>
 
-/*
- * TODO: In Files Loggen
- * TODO: Threadsafe
- */
+inline std::shared_ptr<spdlog::logger> AddLogger(const std::string &name, spdlog::level::level_enum level = spdlog::level::info) {
 
-// Log-Level
-enum struct LogLevel {
-	DEBUG,
-	INFO,
-	WARNING,
-	ERROR,
-	FATAL
-};
+	auto now = std::chrono::system_clock::now();
+	auto now_time_t = std::chrono::system_clock::to_time_t(now);
+	std::tm now_tm = *std::localtime(&now_time_t);
 
-// Logger-Klasse
-struct Logger {
-	Logger(const Logger &) = delete;
-	Logger &operator=(const Logger &) = delete;
+	std::ostringstream timestamp_stream;
+	timestamp_stream << std::put_time(&now_tm, "%y%m%d%H%M");
+	std::string timestamp = timestamp_stream.str();
 
-	static Logger &getInstance() {
-		static Logger instance;
-		return instance;
-	}
-	// Log-Funktion mit variadischen Argumenten
-	template <typename... Args>
-	constexpr void log(LogLevel level, std::string_view format, Args &&...args) const {
-		// Formatierte Nachricht erstellen
-		std::string message = std::vformat(format, std::make_format_args(args...));
+	std::string filename = std::format("logs/{}.log", timestamp);
 
-		// Zeitstempel erstellen
-		auto now = std::chrono::system_clock::now();
-		auto time = std::chrono::system_clock::to_time_t(now);
-		std::tm tm = *std::localtime(&time);
+	auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+	auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename);
+	std::vector<spdlog::sink_ptr> sinks = {console_sink, file_sink};
+	auto logger = std::make_shared<spdlog::logger>(name, sinks.begin(), sinks.end());
 
-		// Log-Level als String
-		std::string levelStr;
-		switch (level) {
-			case LogLevel::DEBUG:
-				levelStr = "DEBUG";
-				break;
-			case LogLevel::INFO:
-				levelStr = "INFO";
-				break;
-			case LogLevel::WARNING:
-				levelStr = "WARNING";
-				break;
-			case LogLevel::ERROR:
-				levelStr = "ERROR";
-				break;
-			case LogLevel::FATAL:
-				levelStr = "FATAL";
-				break;
-		}
+	logger->set_level(level);
 
-		// Ausgabeformat erstellen
-		std::ostringstream oss;
-		oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << " [" << levelStr << "] " << message;
+	spdlog::register_logger(logger);
+	logger->info("{} Logger Added", name);
 
-		// Ausgabe in die Konsole
-		std::cout << oss.str() << std::endl;
-	}
+	return logger;
+}
 
-	// Hilfsfunktionen für verschiedene Log-Level
-	template <typename... Args>
-	constexpr void debug(std::string_view format, Args &&...args) const {
-		log(LogLevel::DEBUG, format, std::forward<Args>(args)...);
-	}
-
-	template <typename... Args>
-	constexpr void info(std::string_view format, Args &&...args) const {
-		log(LogLevel::INFO, format, std::forward<Args>(args)...);
-	}
-
-	template <typename... Args>
-	constexpr void warning(std::string_view format, Args &&...args) const {
-		log(LogLevel::WARNING, format, std::forward<Args>(args)...);
-	}
-
-	template <typename... Args>
-	constexpr void error(std::string_view format, Args &&...args) const {
-		log(LogLevel::ERROR, format, std::forward<Args>(args)...);
-	}
-	template <typename... Args>
-	constexpr void fatal(std::string_view format, Args &&...args) const {
-		log(LogLevel::FATAL, format, std::forward<Args>(args)...);
-		exit(-1);
-	}
-
-private:
-	Logger() = default;
-};
-
-#define LOG Logger::getInstance()
+typedef std::shared_ptr<spdlog::logger> LogPtr;

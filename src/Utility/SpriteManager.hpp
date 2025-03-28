@@ -26,6 +26,8 @@ private:
 	std::unordered_map<Textures::ID, raylib::Rectangle> mTextureRects;
 
 	static SpriteManager *Instance;
+
+	LogPtr mLog = spdlog::get("SPRM");
 };
 
 #define Sprite SpriteManager::GetInstance()
