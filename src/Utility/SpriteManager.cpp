@@ -14,12 +14,19 @@ void SpriteManager::Init(const std::string &texturePath) {
 	Instance = new SpriteManager(texturePath);
 	assert(Instance);
 
-	SpriteM.AddSprite(Sprites::PlayerIdle_1, {raylib::Rectangle(0, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
-	SpriteM.AddSprite(Sprites::PlayerIdle_2, {raylib::Rectangle(16, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
-	SpriteM.AddSprite(Sprites::PlayerIdle_3, {raylib::Rectangle(32, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
-	SpriteM.AddSprite(Sprites::PlayerIdle_4, {raylib::Rectangle(48, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
-	SpriteM.AddSprite(Sprites::PlayerIdle_5, {raylib::Rectangle(64, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
-	SpriteM.AddSprite(Sprites::PlayerIdle_6, {raylib::Rectangle(80, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_1, {raylib::Rectangle(0, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_2, {raylib::Rectangle(16, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_3, {raylib::Rectangle(32, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_4, {raylib::Rectangle(48, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_5, {raylib::Rectangle(64, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::SoldierIdle_6, {raylib::Rectangle(80, 0, 15, 19), raylib::Vector2(0.f, 0.f)});
+
+	SpriteM.AddSprite(Sprites::OrcIdle_1, {raylib::Rectangle(226, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::OrcIdle_2, {raylib::Rectangle(250, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::OrcIdle_3, {raylib::Rectangle(274, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::OrcIdle_4, {raylib::Rectangle(297, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::OrcIdle_5, {raylib::Rectangle(322, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
+	SpriteM.AddSprite(Sprites::OrcIdle_6, {raylib::Rectangle(345, 0, 22, 16), raylib::Vector2(0.f, 0.f)});
 }
 
 void SpriteManager::Shutdown() {

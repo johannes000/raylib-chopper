@@ -20,8 +20,8 @@ public:
 	void AddSprite(Sprites::ID id, Sprite sprite);
 	Sprite GetSprite(Sprites::ID id);
 
-	void Draw(Sprites::ID id, raylib::Vector2 position, f32 rotation, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
-	void Draw(Sprites::ID id, raylib::Vector2 position, raylib::Vector2 origin, f32 rotation, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
+	void Draw(Sprites::ID id, raylib::Vector2 position, f32 rotation = 0.f, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
+	void Draw(Sprites::ID id, raylib::Vector2 position, raylib::Vector2 origin, f32 rotation = 0.f, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
 	void DrawSegment(raylib::Vector2 position, raylib::Rectangle sourceRect, raylib::Vector2 origin, f32 rotation = 0.f, bool hflip = false, bool vflip = false, f32 scale = 1.f, Color tint = WHITE) const;
 
 private:

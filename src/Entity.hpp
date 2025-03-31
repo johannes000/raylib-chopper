@@ -5,6 +5,11 @@
 
 class Game;
 
+enum Category {
+	Enemy = 1 << 0,
+	Friendly = 1 << 1,
+};
+
 struct CollisionData {
 	raylib::Rectangle CollisionRect{};
 	raylib::Vector2 CollisionRectOffset{};
@@ -66,6 +71,7 @@ protected:
 	Game *mGame;
 
 	State mState;
+	Category mCategory;
 
 	raylib::Vector2 mPosition;
 	raylib::Vector2 mVelocity;
@@ -77,4 +83,7 @@ protected:
 
 	raylib::Rectangle mCollisionRect;
 	raylib::Vector2 mCollisionRectOffset;
+
+	void SwitchToAnimation(Animations::ID anim);
+	Animation mCurrentAnimation;
 };

@@ -55,8 +55,6 @@ void Game::RenderGame() {
 
 	mGameBoundry.Draw((Color){160, 185, 186, 255});
 	mGroundRect.Draw((Color){119, 116, 79, 255});
-	auto testSprite = mTestAnimation.GetCurrentFrame();
-	SpriteM.Draw(testSprite, raylib::Vector2(20.f, 1.f), 0.f);
 
 	for (i32 x = mGameBoundry.x; x < mGameBoundry.width - mGameBoundry.x; x += 100) {
 		DrawRectangle(x - 1, mGroundRect.y - 5, 2, 5, BLUE);
@@ -102,8 +100,6 @@ void Game::UpdateCamera() {
 }
 
 void Game::UpdateGame() {
-
-	mTestAnimation.Update();
 
 	for (auto &e : mEntitys) {
 		e->Update();
@@ -160,8 +156,14 @@ void Game::InitGame() {
 	mGroundRect.SetY(mGameBoundry.height - mGroundRect.height);
 
 	mCamera.SetZoom(7.0);
-	mTestAnimation = AniM.GetAnimation(Animations::ID::PlayerIdle);
-	mTestAnimation.Play();
+	AddUnit(Unit::Type::Soldier, {20, 20});
+	AddUnit(Unit::Type::Orc, {40, 20});
 
 	log->info("Game Init fertig.");
+}
+
+void Game::AddUnit(Unit::Type type, raylib::Vector2 pos) {
+	auto ptr = std::make_shared<Unit>(this, type);
+	ptr->SetPosition(pos);
+	AddEntity(std::move(ptr));
 }

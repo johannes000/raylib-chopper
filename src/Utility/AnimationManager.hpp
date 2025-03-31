@@ -2,6 +2,7 @@
 #include "Utility\Includes.hpp"
 #include "Animation.hpp"
 
+class Animation;
 class AnimationManager {
 public:
 	static AnimationManager &GetInstance();
@@ -9,8 +10,8 @@ public:
 	static void Init();
 	static void Shutdown();
 
-	void AddAnimation(Animations::ID id, const Animation &animation);
-	Animation GetAnimation(Animations::ID id) const;
+	void AddAnimation(Animations::ID id, Animation animation);
+	Animation GetAnimation(Animations::ID id);
 
 private:
 	AnimationManager() = default;

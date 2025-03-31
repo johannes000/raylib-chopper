@@ -9,6 +9,8 @@
 #include <vector>
 #include <format>
 
-#include "Logger.hpp"
 #include "Types.hpp"
+#include "Logger.hpp"
+
+#include "AnimationManager.hpp"
 #include "SpriteManager.hpp"

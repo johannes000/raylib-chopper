@@ -1,6 +1,7 @@
 #pragma once
 #include "Utility\Includes.hpp"
 #include "Utility\AnimationManager.hpp"
+#include "Units\Unit.hpp"
 
 class Entity;
 
@@ -16,6 +17,8 @@ public:
 	void UpdateGame();
 	void UpdateCamera();
 	void Shutdown();
+
+	void AddUnit(Unit::Type type, raylib::Vector2 pos);
 
 	template <typename T>
 	Entity *AddEntity(std::shared_ptr<T> entity) {
@@ -43,8 +46,6 @@ private:
 
 	raylib::Rectangle mGameBoundry;
 	raylib::Rectangle mGroundRect;
-
-	Animation mTestAnimation;
 
 private:
 	LogPtr log = spdlog::get("GAM");
