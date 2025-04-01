@@ -26,7 +26,7 @@ public:
 
 private:
 	SpriteManager(const std::string &texturePath);
-	~SpriteManager();
+	~SpriteManager() = default;
 
 	raylib::Texture2D mTexture;
 	std::unordered_map<Sprites::ID, Sprite> mTextures;

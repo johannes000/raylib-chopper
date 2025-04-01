@@ -19,6 +19,7 @@ public:
 	void Shutdown();
 
 	void AddUnit(Unit::Type type, raylib::Vector2 pos);
+	auto GetGroundRect() { return mGroundRect; }
 
 	template <typename T>
 	Entity *AddEntity(std::shared_ptr<T> entity) {

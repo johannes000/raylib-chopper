@@ -81,9 +81,12 @@ protected:
 	f32 mScale;
 	f32 mRotation;
 
+	bool mHFlipped;
+
 	raylib::Rectangle mCollisionRect;
 	raylib::Vector2 mCollisionRectOffset;
 
 	void SwitchToAnimation(Animations::ID anim);
 	Animation mCurrentAnimation;
+	f32 mAnimationSpeedFactor;
 };

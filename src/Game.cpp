@@ -5,7 +5,7 @@
 #include <format>
 
 namespace {
-constexpr f32 GROUND_HEIGHT = 20.f;
+constexpr f32 GROUND_HEIGHT = 40.f;
 
 constexpr f32 FIELD_WIDTH = 500.f;
 constexpr f32 FIELD_HEIGHT = 100.f;

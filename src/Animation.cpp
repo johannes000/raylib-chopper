@@ -5,10 +5,10 @@ Animation::Animation(const std::vector<AnimationFrame> &frames, bool looping)
 	  mLooping(looping) {
 }
 
-void Animation::Update() {
+void Animation::Update(f32 dt) {
 	if (mComplete || !mIsPlaying)
 		return;
-	mFrameTime += GetFrameTime();
+	mFrameTime += dt;
 
 	while (mFrameTime >= mFrames[mCurrentFrame].duration) {
 		mFrameTime -= mFrames[mCurrentFrame].duration;

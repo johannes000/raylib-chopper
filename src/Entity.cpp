@@ -7,7 +7,7 @@ void Entity::Update() {
 	mPosition += mVelocity * GetFrameTime();
 	UpdateCollisionData();
 
-	mCurrentAnimation.Update();
+	mCurrentAnimation.Update(GetFrameTime() * mAnimationSpeedFactor);
 	if (mState == State::Active) {
 		UpdateEntity();
 	}
@@ -70,9 +70,11 @@ std::array<raylib::Vector2, 4> Entity::GetTransformedCollisionRect() const {
 }
 
 void Entity::SwitchToAnimation(Animations::ID anim) {
-	mCurrentAnimation.Reset();
-	mCurrentAnimation = AniM.GetAnimation(anim);
-	mCurrentAnimation.Play();
+	if (mCurrentAnimation.ID() != anim) {
+		mCurrentAnimation.Reset();
+		mCurrentAnimation = AniM.GetAnimation(anim);
+		mCurrentAnimation.Play();
+	}
 }
 
 Entity::Entity(Game *game) : mGame(game),
@@ -81,5 +83,7 @@ Entity::Entity(Game *game) : mGame(game),
 							 mVelocity(raylib::Vector2().Zero()),
 							 mMaxMoveSpeed(0.f),
 							 mScale(1.f),
-							 mRotation(0.f) {
+							 mRotation(0.f),
+							 mHFlipped(false),
+							 mAnimationSpeedFactor(1.f) {
 }

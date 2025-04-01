@@ -10,6 +10,11 @@ public:
 		Soldier,
 		Orc
 	};
+	enum struct State {
+		Moving,
+		Attacking,
+		Idle
+	};
 
 public:
 	Unit(Game *game, Unit::Type type);
@@ -29,4 +34,9 @@ public:
 
 private:
 	Type mUnitType;
+	State mUnitState;
+	bool mIsAttacking;
+
+	void UpdateOrcStatemachiene();
+	void UpdateSoldierStatemachiene();
 };
