@@ -14,7 +14,6 @@ constexpr UnitSpecs GetUnitSpecs(Unit::Type type) {
 		case Soldier: {
 			us.defaultAnimation = Animations::SoldierIdle;
 			us.maxMoveSpeed = 20.f;
-
 		} break;
 		case Orc: {
 			us.defaultAnimation = Animations::OrcIdle;
@@ -23,7 +22,6 @@ constexpr UnitSpecs GetUnitSpecs(Unit::Type type) {
 	}
 	return us;
 };
-
 }; // namespace
 
 Unit::Unit(Game *game, Unit::Type type)

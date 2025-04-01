@@ -97,15 +97,15 @@ void SpriteManager::Draw(Sprites::ID id, raylib::Vector2 position, raylib::Vecto
 		sourceRect.height * scale};
 
 	if (hflip) {
-		// sourceRect.x += sourceRect.width;
 		sourceRect.width *= -1;
+		origin.x = sourceRect.width - origin.x;
 	}
 	if (vflip)
 		sourceRect.height *= -1;
 
 	mTexture.Draw(sourceRect,
 				  destRect,
-				  sprite.origin,
+				  origin,
 				  //   {destRect.width / 2, destRect.height / 2}, // Origin
 				  rotation,
 				  tint);
